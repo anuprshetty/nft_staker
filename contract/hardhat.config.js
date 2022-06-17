@@ -52,3 +52,23 @@ module.exports = {
   },
 };
 
+// Hardhat Tasks:
+// - command to run any hardhat task --> npx hardhat <hardhat_task_name>
+task("accounts", "Prints the list of hardhat accounts", async () => {
+  const accounts = await ethers.getSigners();
+
+  console.log("Total Accounts: ", accounts.length);
+
+  for (let i = 0; i < accounts.length; i++) {
+    console.log(`Account #${i}: ${accounts[i].address}`);
+  }
+});
+
+task("networks", "Prints the list of hardhat networks", async () => {
+  const networks = config.networks;
+  const network_names = Object.keys(networks);
+
+  network_names.forEach((network_name) => {
+    console.log(network_name);
+  });
+});
