@@ -22,6 +22,21 @@
       "internalConsoleOptions": "openOnSessionStart",
       "skipFiles": ["<node_internals>/**"]
     },
+    {
+      "name": "contract->hardhat_script",
+      "request": "launch",
+      "type": "node",
+      "program": "node_modules/.bin/hardhat",
+      "args": [
+        "--network",
+        "${input:hardhat_network}",
+        "run",
+        "scripts/${input:hardhat_script}"
+      ],
+      "env": {
+        "DEPLOY_MODE": "${input:deploy_mode}"
+      }
+    },
     
   ],
   "inputs": [
