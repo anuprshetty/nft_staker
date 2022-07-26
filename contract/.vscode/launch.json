@@ -37,7 +37,18 @@
         "DEPLOY_MODE": "${input:deploy_mode}"
       }
     },
-    
+    {
+      "name": "contract->hardhat_task",
+      "request": "launch",
+      "type": "node",
+      "program": "node_modules/.bin/hardhat",
+      "args": [
+        "--network",
+        "${input:hardhat_network}",
+        "${input:hardhat_task}"
+        // "<hardhat_task_args>" // Example: "--address", "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266"
+      ]
+    }
   ],
   "inputs": [
     {
