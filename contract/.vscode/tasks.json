@@ -1,0 +1,45 @@
+{
+  // See https://go.microsoft.com/fwlink/?LinkId=733558
+  // for the documentation about the tasks.json format
+
+  // See https://code.visualstudio.com/docs/editor/variables-reference
+  // for available variables which can be used in tasks.json, launch.json and settings.json files.
+
+  "version": "2.0.0",
+  "type": "shell",
+  "presentation": {
+    "reveal": "always",
+    "panel": "dedicated", // options: 'dedicated', 'shared'
+    "showReuseMessage": false // Controls whether to show the "Terminal will be reused by tasks, press any key to close it" message.
+  },
+
+  "tasks": [
+    {
+      "label": "contract->prerequisites->npm_install",
+      "command": "npm install"
+    },
+    {
+      "label": "contract->prerequisites->npm_cleanup",
+      "command": "rm -rf node_modules && rm -f package-lock.json"
+    },
+    {
+      "label": "contract->prerequisites->npm_reset",
+      "dependsOrder": "sequence", // by default, "parallel"
+      "dependsOn": [
+        "contract->prerequisites->npm_cleanup",
+        "contract->prerequisites->npm_install"
+      ]
+    },
+    
+  ],
+  "inputs": [
+    {
+      "id": "hardhat_network",
+      "type": "command",
+      "command": "shellCommand.execute",
+      "args": {
+        "command": "cd ${workplaceFolder}contract && npx hardhat networks"
+      }
+    }
+  ]
+}
