@@ -51,7 +51,20 @@
       "label": "contract->5.clean",
       "command": "npx hardhat clean && rm -rf artifacts/ contracts/artifacts/ cache/ coverage/ coverage.json humanReadableAbis.json mochaOutput.json testMatrix.json remix-compiler.config.js compiler_config.json .debugger/ remix-slither-report.json"
     },
-    
+    {
+      "label": "contract->debug_on->console",
+      "command": "npx hardhat --network ${input:hardhat_network} console"
+    },
+    {
+      "label": "contract->debug_on->remix_ide->1.remixd",
+      "command": "remixd",
+      "detail": "Establish a two-way websocket connection between the local computer and Remix IDE for cwd"
+    },
+    {
+      "label": "contract->debug_on->remix_ide->2.launch_remix_ide",
+      "command": "open -a 'Google Chrome' 'https://remix.ethereum.org'",
+      "detail": "The Native IDE for Web3 Development"
+    }
   ],
   "inputs": [
     {
