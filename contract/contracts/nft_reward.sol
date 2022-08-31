@@ -25,7 +25,13 @@ contract NFTReward is ERC20, ERC20Burnable, Ownable {
         _mint(msg.sender, maxSupply / 2);
     }
 
-    
+    function addController(address controller) public onlyOwner {
+        controllers[controller] = true;
+    }
+
+    function removeController(address controller) public onlyOwner {
+        controllers[controller] = false;
+    }
 
     function mint(address to, uint256 amount) public {
         require(controllers[msg.sender], "only controllers can mint");
