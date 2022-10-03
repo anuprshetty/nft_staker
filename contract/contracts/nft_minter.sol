@@ -15,6 +15,14 @@ contract NFTMinter is ERC721Enumerable, Ownable {
     uint256 public maxMintAmount = 5;
     bool public paused = false;
 
+    struct CustomPaymentCurrency {
+        string symbol;
+        IERC20 token;
+        uint256 cost;
+    }
+
+    CustomPaymentCurrency[] public customPaymentCurrencies;
+
     constructor(
         string memory _name,
         string memory _symbol
