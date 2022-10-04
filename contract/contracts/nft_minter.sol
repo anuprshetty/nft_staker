@@ -33,6 +33,37 @@ contract NFTMinter is ERC721Enumerable, Ownable {
         )
     {}
 
+    function addCustomPaymentCurrency(
+        string calldata _symbol,
+        IERC20 _token,
+        uint256 _cost
+    ) public onlyOwner {
+        customPaymentCurrencies.push(
+            CustomPaymentCurrency({symbol: _symbol, token: _token, cost: _cost})
+        );
+    }
+
+    function removeCustomPaymentCurrency(
+        uint256 customPaymentCurrencyIndex
+    ) public onlyOwner {
+        require(
+            customPaymentCurrencyIndex < customPaymentCurrencies.length,
+            "invalid paymentTokenIndex"
+        );
+        customPaymentCurrencies[
+            customPaymentCurrencyIndex
+        ] = customPaymentCurrencies[customPaymentCurrencies.length - 1];
+        customPaymentCurrencies.pop();
+    }
+
+    function getCustomPaymentCurrencies()
+        public
+        view
+        returns (CustomPaymentCurrency[] memory)
+    {
+        return customPaymentCurrencies;
+    }
+
     function setCost(uint256 newCost) public onlyOwner {
         cost = newCost;
     }
