@@ -64,6 +64,28 @@ contract NFTMinter is ERC721Enumerable, Ownable {
         return customPaymentCurrencies;
     }
 
+    /**
+     * @dev minting with native payment currency.
+     */
+    function mint(address _to, uint256 _mintAmount) public payable {
+        uint256 supply = totalSupply();
+        require(!paused, "minting is paused");
+        require(_mintAmount > 0, "mint amount is less than 1");
+        require(_mintAmount <= maxMintAmount, "max mint amount exceeded");
+        require((supply + _mintAmount) <= maxSupply, "max supply exceeded");
+
+        if (msg.sender != owner()) {
+            require(
+                msg.value == cost * _mintAmount,
+                "Need to send 0.0001 ether for each token to be minted"
+            );
+        }
+
+        for (uint256 i = 1; i <= _mintAmount; i++) {
+            _safeMint(_to, supply + i);
+        }
+    }
+
     function setCost(uint256 newCost) public onlyOwner {
         cost = newCost;
     }
