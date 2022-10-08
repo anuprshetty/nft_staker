@@ -86,6 +86,46 @@ contract NFTMinter is ERC721Enumerable, Ownable {
         }
     }
 
+    /**
+     * @dev minting with custom payment currency.
+     */
+    function mint(
+        address _to,
+        uint256 _mintAmount,
+        uint256 customPaymentCurrencyIndex
+    ) public payable {
+        uint256 supply = totalSupply();
+        require(!paused, "minting is paused");
+        require(_mintAmount > 0, "mint amount is less than 1");
+        require(_mintAmount <= maxMintAmount, "max mint amount exceeded");
+        require((supply + _mintAmount) <= maxSupply, "max supply exceeded");
+        require(
+            customPaymentCurrencyIndex < customPaymentCurrencies.length,
+            "invalid paymentTokenIndex"
+        );
+
+        CustomPaymentCurrency
+            storage customPaymentCurrency = customPaymentCurrencies[
+                customPaymentCurrencyIndex
+            ];
+
+        if (msg.sender != owner()) {
+            require(
+                msg.value == customPaymentCurrency.cost * _mintAmount,
+                "money sent is not enough to mint the required NFT tokens"
+            );
+            customPaymentCurrency.token.transferFrom(
+                msg.sender,
+                address(this),
+                customPaymentCurrency.cost * _mintAmount
+            );
+        }
+
+        for (uint256 i = 1; i <= _mintAmount; i++) {
+            _safeMint(_to, supply + i);
+        }
+    }
+
     function setCost(uint256 newCost) public onlyOwner {
         cost = newCost;
     }
