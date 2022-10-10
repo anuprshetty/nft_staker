@@ -133,6 +133,22 @@ contract NFTMinter is ERC721Enumerable, Ownable {
         payable(msg.sender).transfer(address(this).balance);
     }
 
+    /**
+     * @dev withdraw custom payment currency.
+     */
+    function withdraw(
+        uint256 customPaymentCurrencyIndex
+    ) public payable onlyOwner {
+        CustomPaymentCurrency
+            storage customPaymentCurrency = customPaymentCurrencies[
+                customPaymentCurrencyIndex
+            ];
+        customPaymentCurrency.token.transfer(
+            msg.sender,
+            customPaymentCurrency.token.balanceOf(address(this))
+        );
+    }
+
     function setCost(uint256 newCost) public onlyOwner {
         cost = newCost;
     }
