@@ -18,6 +18,17 @@ contract NFTStaker is Ownable, IERC721Receiver {
     mapping(RewardIntervalType rewardIntervalType => uint256 rewardInterval)
         public rewardIntervals;
 
+    struct Vault {
+        string name;
+        bool isActive;
+        NFTMinter nftMinter;
+        NFTReward nftReward;
+        uint256 intervalRewardPrice;
+        RewardIntervalType rewardIntervalType;
+    }
+
+    Vault[] public vaults;
+
     constructor() {
         rewardIntervals[RewardIntervalType.per_second] = 1;
         rewardIntervals[RewardIntervalType.per_min] = 60; // * 60
