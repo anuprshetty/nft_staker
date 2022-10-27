@@ -42,6 +42,20 @@ contract NFTStaker is Ownable, IERC721Receiver {
 
     uint256 public totalStaked;
 
+    event NFTStaked(
+        address owner,
+        uint256 vaultIndex,
+        uint256 tokenId,
+        uint256 timestamp
+    );
+    event NFTUnstaked(
+        address owner,
+        uint256 vaultIndex,
+        uint256 tokenId,
+        uint256 timestamp
+    );
+    
+
     constructor() {
         rewardIntervals[RewardIntervalType.per_second] = 1;
         rewardIntervals[RewardIntervalType.per_min] = 60; // * 60
