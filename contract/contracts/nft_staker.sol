@@ -65,3 +65,40 @@ contract NFTStaker is Ownable, IERC721Receiver {
         rewardIntervals[RewardIntervalType.per_month] = 2_592_000; // * 30
         rewardIntervals[RewardIntervalType.per_year] = 31_104_000; // * 12
     }
+
+    function addVault(
+        string calldata _name,
+        bool _isActive,
+        NFTMinter _nftMinter,
+        NFTReward _nftReward,
+        uint256 _intervalRewardPrice,
+        RewardIntervalType _rewardIntervalType
+    ) public onlyOwner {
+        vaults.push(
+            Vault({
+                name: _name,
+                isActive: _isActive,
+                nftMinter: _nftMinter,
+                nftReward: _nftReward,
+                intervalRewardPrice: _intervalRewardPrice == 0
+                    ? 0.0001 ether
+                    : _intervalRewardPrice * 1 ether,
+                rewardIntervalType: _rewardIntervalType
+            })
+        );
+    }
+
+    function activateVault(uint256 vaultIndex) public onlyOwner {
+        require(vaultIndex < vaults.length, "invalid vaultIndex");
+        vaults[vaultIndex].isActive = true;
+    }
+
+    function deactivateVault(uint256 vaultIndex) public onlyOwner {
+        require(vaultIndex < vaults.length, "invalid vaultIndex");
+        vaults[vaultIndex].isActive = false;
+    }
+
+    function getVaults() public view returns (Vault[] memory) {
+        return vaults;
+    }
+}
