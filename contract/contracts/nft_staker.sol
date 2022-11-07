@@ -135,5 +135,70 @@ contract NFTStaker is Ownable, IERC721Receiver {
         }
     }
 
-    
+    function claim(uint256 vaultIndex, uint256[] calldata tokenIds) external {
+        _claim(msg.sender, vaultIndex, tokenIds, false);
+    }
+
+    function claim(
+        address claimAccount,
+        uint256 vaultIndex,
+        uint256[] calldata tokenIds
+    ) external {
+        _claim(claimAccount, vaultIndex, tokenIds, false);
+    }
+
+    function _claim(
+        address claimAccount,
+        uint256 vaultIndex,
+        uint256[] calldata tokenIds,
+        bool _unstake
+    ) internal {
+        require(vaultIndex < vaults.length, "invalid vaultIndex");
+
+        Vault storage vault = vaults[vaultIndex];
+        require(vault.isActive == true, "vault is deactivated");
+
+        uint256 tokenId;
+        uint256 reward = 0;
+        for (uint i = 0; i < tokenIds.length; i++) {
+            tokenId = tokenIds[i];
+
+            Stake memory staked = stakes[vaultIndex][tokenId];
+            require(
+                staked.owner == msg.sender,
+                "token doesn't belong to the user"
+            );
+
+            reward +=
+                ((block.timestamp - staked.timestamp) /
+                    rewardIntervals[vault.rewardIntervalType]) *
+                vault.intervalRewardPrice;
+
+            stakes[vaultIndex][tokenId] = Stake({
+                owner: msg.sender,
+                vaultIndex: vaultIndex,
+                tokenId: uint24(tokenId),
+                timestamp: uint48(block.timestamp)
+            });
+        }
+
+        uint256 remainingReward = vault.nftReward.maxSupply() -
+            vault.nftReward.totalSupply();
+        if (reward > remainingReward) {
+            reward = remainingReward;
+        }
+
+        if (msg.sender == claimAccount) {
+            emit RewardClaimed(msg.sender, reward);
+        } else {
+            emit RewardClaimed(msg.sender, claimAccount, reward);
+        }
+        if (reward > 0) {
+            vault.nftReward.mint(claimAccount, reward);
+        }
+
+        if (_unstake) {
+            _unstakeMany(vaultIndex, tokenIds);
+        }
+    }
 }
