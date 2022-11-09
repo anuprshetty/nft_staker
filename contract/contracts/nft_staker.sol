@@ -147,6 +147,18 @@ contract NFTStaker is Ownable, IERC721Receiver {
         _claim(claimAccount, vaultIndex, tokenIds, false);
     }
 
+    function unstake(uint256 vaultIndex, uint256[] calldata tokenIds) external {
+        _claim(msg.sender, vaultIndex, tokenIds, true);
+    }
+
+    function unstake(
+        address claimAccount,
+        uint256 vaultIndex,
+        uint256[] calldata tokenIds
+    ) external {
+        _claim(claimAccount, vaultIndex, tokenIds, true);
+    }
+
     function _claim(
         address claimAccount,
         uint256 vaultIndex,
@@ -199,6 +211,32 @@ contract NFTStaker is Ownable, IERC721Receiver {
 
         if (_unstake) {
             _unstakeMany(vaultIndex, tokenIds);
+        }
+    }
+
+    function _unstakeMany(
+        uint256 vaultIndex,
+        uint256[] calldata tokenIds
+    ) internal {
+        require(vaultIndex < vaults.length, "invalid vaultIndex");
+
+        Vault storage vault = vaults[vaultIndex];
+        require(vault.isActive == true, "vault is deactivated");
+
+        totalStaked -= tokenIds.length;
+
+        uint256 tokenId;
+        for (uint i = 0; i < tokenIds.length; i++) {
+            tokenId = tokenIds[i];
+            Stake memory staked = stakes[vaultIndex][tokenId];
+            require(
+                staked.owner == msg.sender,
+                "token doesn't belong to the user"
+            );
+            delete stakes[vaultIndex][tokenId];
+
+            emit NFTUnstaked(msg.sender, vaultIndex, tokenId, block.timestamp);
+            vault.nftMinter.transferFrom(address(this), msg.sender, tokenId);
         }
     }
 }
