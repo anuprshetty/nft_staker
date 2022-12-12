@@ -293,4 +293,37 @@ contract NFTStaker is Ownable, IERC721Receiver {
 
         return totalStakes;
     }
+
+    function stakedTokensOf(
+        address account,
+        uint256 vaultIndex
+    ) external view returns (uint256[] memory) {
+        require(vaultIndex < vaults.length, "invalid vaultIndex");
+
+        Vault storage vault = vaults[vaultIndex];
+        require(vault.isActive == true, "vault is deactivated");
+
+        uint256[] memory tokenIds = vault.nftMinter.walletOfOwner(account);
+        uint256[] memory tempTokenIds = new uint256[](tokenIds.length);
+
+        uint256 tokenId;
+        uint256 length = 0;
+        for (uint i = 0; i < tokenIds.length; i++) {
+            tokenId = tokenIds[i];
+
+            if (stakes[vaultIndex][tokenId].owner == account) {
+                tempTokenIds[length] = tokenId;
+                length += 1;
+            }
+        }
+
+        uint256[] memory stakedTokenIds = new uint256[](length);
+        for (uint i = 0; i < length; i++) {
+            stakedTokenIds[i] = tempTokenIds[i];
+        }
+
+        return stakedTokenIds;
+    }
+
+    
 }
