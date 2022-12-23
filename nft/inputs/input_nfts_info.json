@@ -1,0 +1,29 @@
+[
+  {
+    "nft_collection_id": "tom_and_jerry",
+    "nft_collection_name": "NFT Collection TomAndJerry",
+    "name": "Tom and Jerry",
+    "symbol": "COL-TNJ",
+    "image_name": "tom_and_jerry.png",
+    "num_copies": 10,
+    "ipfs_node_rpc_api": "/ip4/127.0.0.1/tcp/5001"
+  },
+  {
+    "nft_collection_id": "mickey_mouse",
+    "nft_collection_name": "NFT Collection MickeyMouse",
+    "name": "Mickey Mouse",
+    "symbol": "COL-MCM",
+    "image_name": "mickey_mouse.png",
+    "num_copies": 10,
+    "ipfs_node_rpc_api": "/ip4/127.0.0.1/tcp/5001"
+  },
+  {
+    "nft_collection_id": "scooby_doo",
+    "nft_collection_name": "NFT Collection ScoobyDoo",
+    "name": "Scooby Doo",
+    "symbol": "COL-SBD",
+    "image_name": "scooby_doo.png",
+    "num_copies": 10,
+    "ipfs_node_rpc_api": "/ip4/127.0.0.1/tcp/5001"
+  }
+]
