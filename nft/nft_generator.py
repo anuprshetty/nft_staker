@@ -43,3 +43,31 @@ def ipfs_push_with_ipfshttpclient(ipfs_node_rpc_api, files, file_extension):
         return files_folder_cid
 
 
+def run_cli_command(command):
+    process = subprocess.Popen(
+        command.split(), stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True
+    )
+    output, error = process.communicate()
+    return output.strip(), error.strip()
+
+
+def ipfs_push_with_ipfs_cli(ipfs_node_rpc_api, folder_path):
+    ipfs_cli_command = f"ipfs --api {ipfs_node_rpc_api} add -r {folder_path}"
+    output, error = run_cli_command(ipfs_cli_command)
+
+    # if error:
+    #     print(f"Error in ipfs_push_with_ipfs_cli: {error}")
+    #     exit(1)
+
+    files_folder_cid = output.split()[-2]
+
+    ipfs_cli_command = f"ipfs --api {ipfs_node_rpc_api} pin add {files_folder_cid}"  # Explicitly pin the content to ensure that it's not garbage collected in the IPFS node.
+    output, error = run_cli_command(ipfs_cli_command)
+
+    if error:
+        print(f"Error in ipfs_push_with_ipfs_cli: {error}")
+        exit(1)
+
+    return files_folder_cid
+
+
