@@ -71,3 +71,50 @@ def ipfs_push_with_ipfs_cli(ipfs_node_rpc_api, folder_path):
     return files_folder_cid
 
 
+def nft_image_generator(input_nfts_info):
+    nft_image_folders_cids = []
+    for input_nft_info in input_nfts_info:
+        image_path = os.path.join(
+            os.path.dirname(__file__), "inputs/images/", input_nft_info["image_name"]
+        )
+        image_extension = os.path.splitext(input_nft_info["image_name"])[1][1:]
+        num_copies = input_nft_info["num_copies"]
+        ipfs_node_rpc_api = input_nft_info["ipfs_node_rpc_api"]
+
+        temp_folder_path = os.path.join(
+            os.path.dirname(__file__),
+            f"outputs/temp_nft_images/{input_nft_info['nft_collection_id']}/",
+        )
+
+        if not os.path.exists(temp_folder_path):
+            os.makedirs(temp_folder_path)
+
+        with Image.open(image_path) as base_image:
+            nft_images = []
+            for image_id in range(1, num_copies + 1):
+                nft_image = io.BytesIO()
+                base_image.save(nft_image, format=image_extension)
+                nft_image.seek(0)
+                nft_images.append(nft_image.getvalue())
+
+                temp_file_path = os.path.join(
+                    temp_folder_path, str(image_id) + "." + image_extension
+                )
+
+                with open(temp_file_path, "wb") as temp_file:
+                    nft_image.seek(0)
+                    temp_file.write(nft_image.getvalue())
+
+        # nft_image_folder_cid = ipfs_push_with_ipfshttpclient(
+        #     ipfs_node_rpc_api, nft_images, image_extension
+        # )
+
+        nft_image_folder_cid = ipfs_push_with_ipfs_cli(
+            ipfs_node_rpc_api, temp_folder_path
+        )
+
+        nft_image_folders_cids.append(nft_image_folder_cid)
+
+    return nft_image_folders_cids
+
+
