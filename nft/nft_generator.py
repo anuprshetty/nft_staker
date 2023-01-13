@@ -118,3 +118,28 @@ def nft_image_generator(input_nfts_info):
     return nft_image_folders_cids
 
 
+def get_nft_metadata(base_metadata, base_metadata_placeholders):
+    temp_base_metadata = copy.deepcopy(base_metadata)
+
+    def replace_placeholders(temp_base_metadata, placeholders):
+        if isinstance(temp_base_metadata, str):
+            for placeholder_key, placeholder_value in placeholders.items():
+                temp_base_metadata = temp_base_metadata.replace(
+                    f"{{{placeholder_key}}}", str(placeholder_value)
+                )
+            return temp_base_metadata
+        elif isinstance(temp_base_metadata, dict):
+            return {
+                metadata_key: replace_placeholders(metadata_value, placeholders)
+                for metadata_key, metadata_value in temp_base_metadata.items()
+            }
+        elif isinstance(temp_base_metadata, list):
+            return [
+                replace_placeholders(item, placeholders) for item in temp_base_metadata
+            ]
+        else:
+            return temp_base_metadata
+
+    return replace_placeholders(temp_base_metadata, base_metadata_placeholders)
+
+
