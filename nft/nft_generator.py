@@ -143,3 +143,60 @@ def get_nft_metadata(base_metadata, base_metadata_placeholders):
     return replace_placeholders(temp_base_metadata, base_metadata_placeholders)
 
 
+def nft_metadata_generator(input_nfts_info, nft_image_folders_cids):
+    nft_metadata_folders_cids = []
+    for index, input_nft_info in enumerate(input_nfts_info):
+        nft_image_folder_cid = nft_image_folders_cids[index]
+
+        image_extension = os.path.splitext(input_nft_info["image_name"])[1][1:]
+        metadata_path = os.path.join(
+            os.path.dirname(__file__), "inputs/nft_metadata.json"
+        )
+
+        name = input_nft_info["name"]
+        metadata_extension = "json"
+        num_copies = input_nft_info["num_copies"]
+        ipfs_node_rpc_api = input_nft_info["ipfs_node_rpc_api"]
+
+        temp_folder_path = os.path.join(
+            os.path.dirname(__file__),
+            f"outputs/temp_nft_metadata/{input_nft_info['nft_collection_id']}/",
+        )
+
+        if not os.path.exists(temp_folder_path):
+            os.makedirs(temp_folder_path)
+
+        base_metadata = get_json_content(metadata_path)
+
+        nft_metadata_list = []
+        for image_id in range(1, num_copies + 1):
+            base_metadata_placeholders = {
+                "name": name,
+                "nft_image_folder_cid": nft_image_folder_cid,
+                "image_id": image_id,
+                "image_extension": image_extension,
+            }
+
+            nft_metadata = get_nft_metadata(base_metadata, base_metadata_placeholders)
+
+            nft_metadata_list.append(json.dumps(nft_metadata))
+
+            temp_file_path = os.path.join(
+                temp_folder_path, str(image_id) + "." + metadata_extension
+            )
+            with open(temp_file_path, "w", encoding="utf-8") as temp_file:
+                json.dump(nft_metadata, temp_file, indent=2)
+
+        # nft_metadata_folder_cid = ipfs_push_with_ipfshttpclient(
+        #     ipfs_node_rpc_api, nft_metadata_list, metadata_extension
+        # )
+
+        nft_metadata_folder_cid = ipfs_push_with_ipfs_cli(
+            ipfs_node_rpc_api, temp_folder_path
+        )
+
+        nft_metadata_folders_cids.append(nft_metadata_folder_cid)
+
+    return nft_metadata_folders_cids
+
+
