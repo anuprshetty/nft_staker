@@ -200,3 +200,38 @@ def nft_metadata_generator(input_nfts_info, nft_image_folders_cids):
     return nft_metadata_folders_cids
 
 
+def generate_output_nfts_info(
+    input_nfts_info, nft_image_folders_cids, nft_metadata_folders_cids
+):
+    file_path = os.path.join(
+        os.path.dirname(__file__),
+        f"outputs/output_nfts_info.json",
+    )
+    folder_path = os.path.dirname(file_path)
+
+    if not os.path.exists(folder_path):
+        os.makedirs(folder_path)
+
+    output_nfts_info = {}
+    for index, input_nft_info in enumerate(input_nfts_info):
+        nft_image_folder_cid = nft_image_folders_cids[index]
+        nft_metadata_folder_cid = nft_metadata_folders_cids[index]
+
+        output_nft_info = {
+            "nft_collection_id": input_nft_info["nft_collection_id"],
+            "nft_collection_name": input_nft_info["nft_collection_name"],
+            "name": input_nft_info["name"],
+            "symbol": input_nft_info["symbol"],
+            "image_name": input_nft_info["image_name"],
+            "num_copies": input_nft_info["num_copies"],
+            "ipfs_node_rpc_api": input_nft_info["ipfs_node_rpc_api"],
+            "nft_image_folder_cid": nft_image_folder_cid,
+            "nft_metadata_folder_cid": nft_metadata_folder_cid,
+        }
+
+        output_nfts_info[input_nft_info["nft_collection_id"]] = output_nft_info
+
+    with open(file_path, "w") as file:
+        json.dump(output_nfts_info, file, indent=2)
+
+
