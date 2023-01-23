@@ -235,3 +235,20 @@ def generate_output_nfts_info(
         json.dump(output_nfts_info, file, indent=2)
 
 
+if __name__ == "__main__":
+    try:
+        input_nfts_info = get_input_nfts_info()
+        nft_image_folders_cids = nft_image_generator(input_nfts_info)
+        nft_metadata_folders_cids = nft_metadata_generator(
+            input_nfts_info, nft_image_folders_cids
+        )
+        generate_output_nfts_info(
+            input_nfts_info, nft_image_folders_cids, nft_metadata_folders_cids
+        )
+
+        print("\nSUCCESS: NFT generation ... DONE")
+    except Exception as error:
+        print("\n--------------------------- ERROR --------------------------\n")
+        print(error)
+        print("\n------------------------------------------------------------\n")
+        print("ERROR NOTE: Make sure IPFS node is running.")
