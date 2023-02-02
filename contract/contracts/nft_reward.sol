@@ -2,12 +2,12 @@
 
 pragma solidity ^0.8.0;
 
-import "../node_modules/@openzeppelin/contracts/access/Ownable.sol";
-import "../node_modules/@openzeppelin/contracts/token/ERC20/ERC20.sol";
-import "../node_modules/@openzeppelin/contracts/token/ERC20/extensions/ERC20Burnable.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Burnable.sol";
 
 contract NFTReward is ERC20, ERC20Burnable, Ownable {
-    mapping(address controller => bool is_permitted) controllers;
+    mapping(address controller => bool is_permitted) public controllers;
     uint256 public immutable maxSupply;
 
     constructor(
@@ -16,8 +16,8 @@ contract NFTReward is ERC20, ERC20Burnable, Ownable {
         uint256 _maxSupply
     )
         ERC20(
-            bytes(_name).length > 0 ? _name : "TomAndJerry Reward",
-            bytes(_symbol).length > 0 ? _symbol : "TNJR"
+            bytes(_name).length > 0 ? _name : "NFT Reward Null",
+            bytes(_symbol).length > 0 ? _symbol : "RWD-NUL"
         )
     {
         maxSupply = _maxSupply * 1 ether;
