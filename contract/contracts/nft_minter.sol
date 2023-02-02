@@ -2,9 +2,9 @@
 
 pragma solidity ^0.8.0;
 
-import "../node_modules/@openzeppelin/contracts/access/Ownable.sol";
-import "../node_modules/@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
-import "../node_modules/@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
+import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
 contract NFTMinter is ERC721Enumerable, Ownable {
     using Strings for uint256;
@@ -28,8 +28,8 @@ contract NFTMinter is ERC721Enumerable, Ownable {
         string memory _symbol
     )
         ERC721(
-            bytes(_name).length > 0 ? _name : "TomAndJerry NFT Collection",
-            bytes(_symbol).length > 0 ? _symbol : "TNJC"
+            bytes(_name).length > 0 ? _name : "NFT Collection Null",
+            bytes(_symbol).length > 0 ? _symbol : "COL-NUL"
         )
     {}
 
@@ -38,6 +38,7 @@ contract NFTMinter is ERC721Enumerable, Ownable {
         IERC20 _token,
         uint256 _cost
     ) public onlyOwner {
+        require(_cost > 0, "cost should be greater than 0");
         customPaymentCurrencies.push(
             CustomPaymentCurrency({symbol: _symbol, token: _token, cost: _cost})
         );
