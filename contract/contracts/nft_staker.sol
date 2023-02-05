@@ -74,15 +74,18 @@ contract NFTStaker is Ownable, IERC721Receiver {
         uint256 _intervalRewardPrice,
         RewardIntervalType _rewardIntervalType
     ) public onlyOwner {
+        require(
+            _intervalRewardPrice > 0,
+            "intervalRewardPrice should be greater than 0"
+        );
+
         vaults.push(
             Vault({
                 name: _name,
                 isActive: _isActive,
                 nftMinter: _nftMinter,
                 nftReward: _nftReward,
-                intervalRewardPrice: _intervalRewardPrice == 0
-                    ? 0.0001 ether
-                    : _intervalRewardPrice * 1 ether,
+                intervalRewardPrice: _intervalRewardPrice,
                 rewardIntervalType: _rewardIntervalType
             })
         );
