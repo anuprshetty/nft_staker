@@ -1,0 +1,19 @@
+{
+  "NFTMinter": {
+    "tom_and_jerry": {
+      "contract_instance_name": "tom_and_jerry",
+      "address": "",
+      "nft_metadata_folder_cid": ""
+    },
+    "mickey_mouse": {
+      "contract_instance_name": "mickey_mouse",
+      "address": "",
+      "nft_metadata_folder_cid": ""
+    },
+    "scooby_doo": {
+      "contract_instance_name": "scooby_doo",
+      "address": "",
+      "nft_metadata_folder_cid": ""
+    }
+  }
+}
