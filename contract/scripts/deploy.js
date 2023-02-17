@@ -44,6 +44,23 @@ class Utils {
     return folder_path;
   }
 
-  
+  static async generate_dapp_contract_info(contractName, contractInstances) {
+    const artifact = await hre.artifacts.readArtifact(contractName);
+
+    const dapp_contract_info = {
+      contractName: artifact.contractName,
+      sourceName: artifact.sourceName,
+      contractInstances: contractInstances,
+      abi: artifact.abi,
+    };
+
+    fs.writeFileSync(
+      path.join(
+        Utils.dapp_contracts_info_folder_path,
+        `${dapp_contract_info.contractName}.json`
+      ),
+      JSON.stringify(dapp_contract_info, null, 2)
+    );
+  }
 }
 
