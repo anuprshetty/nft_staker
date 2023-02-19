@@ -64,3 +64,20 @@ class Utils {
   }
 }
 
+
+
+async function main() {
+  const DEPLOY_MODES = ["DeploySetup", "DeployE2E", "SetupE2E"];
+  const DEPLOY_MODE = process.env.DEPLOY_MODE;
+  if (!DEPLOY_MODE || !DEPLOY_MODES.includes(DEPLOY_MODE)) {
+    throw new Error("Invalid DEPLOY_MODE");
+  }
+
+  
+}
+
+// We recommend this pattern to be able to use async/await everywhere
+// and properly handle errors.
+main().catch((error) => {
+  
+});
