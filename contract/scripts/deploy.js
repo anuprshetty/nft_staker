@@ -73,6 +73,14 @@ async function main() {
     throw new Error("Invalid DEPLOY_MODE");
   }
 
+  await hre.run("compile");
+
+  await Utils.display_hardhat_network_info();
+
+  console.log("-----------------------------------------------------");
+  console.log("------------- Contracts Deployment Info -------------");
+  console.log("-----------------------------------------------------");
+
   
 }
 
