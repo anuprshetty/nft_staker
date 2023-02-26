@@ -80,7 +80,58 @@ class BaseContract {
     ] = {};
   }
 
+  async deployContract() {
+    const maxRetries = 6;
+    const retryDelaySeconds = 10;
 
+    let retries = 0;
+
+    while (retries < maxRetries) {
+      try {
+        const Contract = await hre.ethers.getContractFactory(
+          this.contract_name
+        );
+        this.contract = await Contract.deploy(
+          ...this.contract_constructor_args
+        );
+        await this.contract.waitForDeployment();
+        break;
+      } catch (error) {
+        if ("code" in error && error.code === "UND_ERR_HEADERS_TIMEOUT") {
+          console.error(
+            `Error UND_ERR_HEADERS_TIMEOUT (${this.contract_name} contract). Retrying in ${retryDelaySeconds} seconds ...`
+          );
+
+          retries++;
+
+          await new Promise((resolve) =>
+            setTimeout(resolve, retryDelaySeconds * 1000)
+          );
+        } else {
+          throw error;
+        }
+      }
+    }
+
+    if (retries === maxRetries) {
+      console.error(
+        `Error UND_ERR_HEADERS_TIMEOUT (${this.contract_name} contract). Failed to deploy after ${maxRetries} retries.`
+      );
+      process.exitCode = 1;
+    }
+
+    this.contract_address = this.contract.target;
+
+    hre.ethernalUploadAst = true;
+    await hre.ethernal.push({
+      name: this.contract_name,
+      address: this.contract_address,
+    });
+
+    Utils.contracts_setup_outputs[this.contract_name][
+      this.contract_instance_name
+    ]["address"] = this.contract_address;
+  }
 
 
 }
