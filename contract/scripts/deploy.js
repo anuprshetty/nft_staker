@@ -64,6 +64,27 @@ class Utils {
   }
 }
 
+class BaseContract {
+  constructor(contract_name, contract_instance_name) {
+    this.contract_name = contract_name;
+    this.contract_instance_name = contract_instance_name;
+    this.contract_address = "";
+    this.contract = null;
+    this.contract_constructor_args = [];
+
+    if (!(this.contract_name in Utils.contracts_setup_outputs)) {
+      Utils.contracts_setup_outputs[this.contract_name] = {};
+    }
+    Utils.contracts_setup_outputs[this.contract_name][
+      this.contract_instance_name
+    ] = {};
+  }
+
+
+
+
+}
+
 
 
 async function main() {
