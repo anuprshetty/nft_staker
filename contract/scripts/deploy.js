@@ -133,7 +133,15 @@ class BaseContract {
     ]["address"] = this.contract_address;
   }
 
+  async attachContract() {
+    const Contract = await hre.ethers.getContractFactory(this.contract_name);
 
+    this.contract = Contract.attach(this.contract_address);
+
+    Utils.contracts_setup_outputs[this.contract_name][
+      this.contract_instance_name
+    ]["address"] = this.contract_address;
+  }
 }
 
 
