@@ -144,6 +144,27 @@ class BaseContract {
   }
 }
 
+class Token extends BaseContract {
+  constructor(contract_instance_name, contract_constructor_args) {
+    super("Token", contract_instance_name);
+
+    this.symbol = contract_constructor_args.symbol;
+    this.contract_constructor_args = [
+      contract_constructor_args.name,
+      contract_constructor_args.symbol,
+      contract_constructor_args.maxSupply,
+    ];
+  }
+
+  
+}
+
+
+
+
+
+
+
 
 
 async function main() {
