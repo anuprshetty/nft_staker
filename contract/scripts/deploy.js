@@ -156,7 +156,15 @@ class Token extends BaseContract {
     ];
   }
 
-  
+  async mint(to, amount) {
+    await (await this.contract.mint(to, amount)).wait();
+
+    if (parseInt(await this.contract.balanceOf(to)) !== amount) {
+      throw new Error(
+        `Error in ${this.mint.name}() method while setting up ${this.contract_name} contract - ${this.contract_instance_name} contract_instance`
+      );
+    }
+  }
 }
 
 
