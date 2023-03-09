@@ -178,7 +178,25 @@ class NFTMinter extends BaseContract {
     ];
   }
 
+  async addCustomPaymentCurrency(currency_index, symbol, token, cost) {
+    await (
+      await this.contract.addCustomPaymentCurrency(symbol, token, cost)
+    ).wait();
 
+    const customPaymentCurrency = await this.contract.customPaymentCurrencies(
+      currency_index
+    );
+
+    if (
+      customPaymentCurrency.symbol !== symbol ||
+      customPaymentCurrency.token !== token ||
+      parseInt(customPaymentCurrency.cost) !== cost
+    ) {
+      throw new Error(
+        `Error in ${this.addCustomPaymentCurrency.name}() method while setting up ${this.contract_name} contract - ${this.contract_instance_name} contract_instance`
+      );
+    }
+  }
 
 
 }
