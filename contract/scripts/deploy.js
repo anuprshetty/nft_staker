@@ -198,7 +198,15 @@ class NFTMinter extends BaseContract {
     }
   }
 
+  async setBaseURI(NFTMetadataFolderCID) {
+    await (await this.contract.setBaseURI(NFTMetadataFolderCID)).wait();
 
+    if ((await this.contract.baseURI()) !== `ipfs://${NFTMetadataFolderCID}/`) {
+      throw new Error(
+        `Error in ${this.setBaseURI.name}() method while setting up ${this.contract_name} contract - ${this.contract_instance_name} contract_instance`
+      );
+    }
+  }
 }
 
 
