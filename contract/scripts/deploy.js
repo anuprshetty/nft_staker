@@ -209,7 +209,19 @@ class NFTMinter extends BaseContract {
   }
 }
 
+class NFTReward extends BaseContract {
+  constructor(contract_instance_name, contract_constructor_args) {
+    super("NFTReward", contract_instance_name);
 
+    this.contract_constructor_args = [
+      contract_constructor_args.name,
+      contract_constructor_args.symbol,
+      contract_constructor_args.maxSupply,
+    ];
+  }
+
+
+}
 
 
 
