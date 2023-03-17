@@ -220,7 +220,15 @@ class NFTReward extends BaseContract {
     ];
   }
 
+  async addController(controller) {
+    await (await this.contract.addController(controller)).wait();
 
+    if (!(await this.contract.controllers(controller))) {
+      throw new Error(
+        `Error in ${this.addController.name}() method while setting up ${this.contract_name} contract - ${this.contract_instance_name} contract_instance`
+      );
+    }
+  }
 }
 
 
