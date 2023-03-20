@@ -231,7 +231,22 @@ class NFTReward extends BaseContract {
   }
 }
 
+class NFTStaker extends BaseContract {
+  constructor(contract_instance_name) {
+    super("NFTStaker", contract_instance_name);
 
+    this.rewardIntervalType = {
+      per_second: 0,
+      per_min: 1,
+      per_hour: 2,
+      per_day: 3,
+      per_month: 4,
+      per_year: 5,
+    };
+  }
+
+
+}
 
 
 
