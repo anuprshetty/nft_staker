@@ -245,7 +245,41 @@ class NFTStaker extends BaseContract {
     };
   }
 
+  async addVault(
+    vault_index,
+    name,
+    isActive,
+    nftMinter,
+    nftReward,
+    intervalRewardPrice,
+    rewardIntervalType
+  ) {
+    await (
+      await this.contract.addVault(
+        name,
+        isActive,
+        nftMinter,
+        nftReward,
+        intervalRewardPrice,
+        rewardIntervalType
+      )
+    ).wait();
 
+    const vault = await this.contract.vaults(vault_index);
+
+    if (
+      vault.name !== name ||
+      vault.isActive !== isActive ||
+      vault.nftMinter !== nftMinter ||
+      vault.nftReward !== nftReward ||
+      parseInt(vault.intervalRewardPrice) !== intervalRewardPrice ||
+      parseInt(vault.rewardIntervalType) !== rewardIntervalType
+    ) {
+      throw new Error(
+        `Error in ${this.addVault.name}() method while setting up ${this.contract_name} contract - ${this.contract_instance_name} contract_instance`
+      );
+    }
+  }
 }
 
 
