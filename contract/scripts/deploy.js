@@ -282,6 +282,23 @@ class NFTStaker extends BaseContract {
   }
 }
 
+class BaseDeploy {
+  constructor() {
+    this.tokens = [];
+    this.nft_collections = [];
+    this.nft_rewards = [];
+    this.nft_stakers = [];
+  }
+
+
+
+
+}
+
+
+
+
+
 
 
 async function main() {
