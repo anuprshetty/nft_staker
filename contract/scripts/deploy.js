@@ -290,16 +290,30 @@ class BaseDeploy {
     this.nft_stakers = [];
   }
 
+  async deploy() {
+    const token_alp = new Token("token_alpha", {
+      name: "Token Alpha",
+      symbol: "TKN-ALP",
+      maxSupply: 1000000,
+    });
+    const token_bet = new Token("token_beta", {
+      name: "Token Beta",
+      symbol: "TKN-BET",
+      maxSupply: 1000000,
+    });
+    const token_gam = new Token("token_gamma", {
+      name: "Token Gamma",
+      symbol: "TKN-GAM",
+      maxSupply: 1000000,
+    });
 
+    this.tokens = [token_alp, token_bet, token_gam];
 
-
+    for (const token of this.tokens) {
+      await token.deployContract();
+    }
+  }
 }
-
-
-
-
-
-
 
 async function main() {
   const DEPLOY_MODES = ["DeploySetup", "DeployE2E", "SetupE2E"];
@@ -315,12 +329,8 @@ async function main() {
   console.log("-----------------------------------------------------");
   console.log("------------- Contracts Deployment Info -------------");
   console.log("-----------------------------------------------------");
-
-  
 }
 
 // We recommend this pattern to be able to use async/await everywhere
 // and properly handle errors.
-main().catch((error) => {
-  
-});
+main().catch((error) => {});
