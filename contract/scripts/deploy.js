@@ -312,6 +312,19 @@ class BaseDeploy {
     for (const token of this.tokens) {
       await token.deployContract();
     }
+
+    const hash_wallet_accounts = JSON.parse(
+      fs.readFileSync(
+        path.join(__dirname, "..", "hash_wallet_accounts.json"),
+        "utf8"
+      )
+    );
+
+    for (const token of this.tokens) {
+      for (const account of hash_wallet_accounts) {
+        await token.mint(account.address, 10000);
+      }
+    }
   }
 }
 
