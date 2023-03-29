@@ -325,6 +325,23 @@ class BaseDeploy {
         await token.mint(account.address, 10000);
       }
     }
+
+    const output_nfts_info = await this.get_output_nfts_info();
+
+    this.nft_collections = [];
+    for (let output_nft_info in output_nfts_info) {
+      output_nft_info = output_nfts_info[output_nft_info];
+
+      const nft_collection = new NFTMinter(
+        output_nft_info.nft_collection_id,
+        output_nft_info
+      );
+      this.nft_collections.push(nft_collection);
+    }
+
+    for (const nft_collection of this.nft_collections) {
+      await nft_collection.deployContract();
+    }
   }
 }
 
