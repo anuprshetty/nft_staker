@@ -342,6 +342,18 @@ class BaseDeploy {
     for (const nft_collection of this.nft_collections) {
       await nft_collection.deployContract();
     }
+
+    for (const [c_index, nft_collection] of this.nft_collections.entries()) {
+      for (const [t_index, token] of this.tokens.entries()) {
+        const cost = parseInt((c_index + 1) * (t_index + 1));
+        await nft_collection.addCustomPaymentCurrency(
+          t_index,
+          token.symbol,
+          token.contract_address,
+          cost
+        );
+      }
+    }
   }
 }
 
