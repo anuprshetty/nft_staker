@@ -354,6 +354,28 @@ class BaseDeploy {
         );
       }
     }
+
+    const nft_reward_gld = new NFTReward("nft_reward_gold", {
+      name: "NFT Reward Gold",
+      symbol: "RWD-GLD",
+      maxSupply: 1000000,
+    });
+    const nft_reward_slv = new NFTReward("nft_reward_silver", {
+      name: "NFT Reward Silver",
+      symbol: "RWD-SLV",
+      maxSupply: 1000000,
+    });
+    const nft_reward_ptm = new NFTReward("nft_reward_platinum", {
+      name: "NFT Reward Platinum",
+      symbol: "RWD-PTM",
+      maxSupply: 1000000,
+    });
+
+    this.nft_rewards = [nft_reward_gld, nft_reward_slv, nft_reward_ptm];
+
+    for (const nft_reward of this.nft_rewards) {
+      await nft_reward.deployContract();
+    }
   }
 }
 
