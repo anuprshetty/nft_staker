@@ -376,6 +376,10 @@ class BaseDeploy {
     for (const nft_reward of this.nft_rewards) {
       await nft_reward.deployContract();
     }
+
+    const nft_staker = new NFTStaker("nft_staker");
+    this.nft_stakers = [nft_staker];
+    await nft_staker.deployContract();
   }
 }
 
