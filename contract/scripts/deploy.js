@@ -380,6 +380,10 @@ class BaseDeploy {
     const nft_staker = new NFTStaker("nft_staker");
     this.nft_stakers = [nft_staker];
     await nft_staker.deployContract();
+
+    for (const nft_reward of this.nft_rewards) {
+      await nft_reward.addController(nft_staker.contract_address);
+    }
   }
 }
 
