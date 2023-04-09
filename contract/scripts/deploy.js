@@ -384,6 +384,48 @@ class BaseDeploy {
     for (const nft_reward of this.nft_rewards) {
       await nft_reward.addController(nft_staker.contract_address);
     }
+
+    const [nft_collection_tnj, nft_collection_mcm, nft_collection_sbd] =
+      this.nft_collections;
+
+    const vaults = [
+      {
+        name: "tom_and_jerry-gold",
+        isActive: true,
+        nftMinter: nft_collection_tnj.contract_address,
+        nftReward: nft_reward_gld.contract_address,
+        intervalRewardPrice: 30,
+        rewardIntervalType: nft_staker.rewardIntervalType.per_min,
+      },
+      {
+        name: "mickey_mouse-silver",
+        isActive: true,
+        nftMinter: nft_collection_mcm.contract_address,
+        nftReward: nft_reward_slv.contract_address,
+        intervalRewardPrice: 20,
+        rewardIntervalType: nft_staker.rewardIntervalType.per_hour,
+      },
+      {
+        name: "scooby_doo-platinum",
+        isActive: true,
+        nftMinter: nft_collection_sbd.contract_address,
+        nftReward: nft_reward_ptm.contract_address,
+        intervalRewardPrice: 10,
+        rewardIntervalType: nft_staker.rewardIntervalType.per_day,
+      },
+    ];
+
+    for (const [vault_index, vault] of vaults.entries()) {
+      await nft_staker.addVault(
+        vault_index,
+        vault.name,
+        vault.isActive,
+        vault.nftMinter,
+        vault.nftReward,
+        vault.intervalRewardPrice,
+        vault.rewardIntervalType
+      );
+    }
   }
 }
 
