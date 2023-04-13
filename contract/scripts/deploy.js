@@ -426,6 +426,44 @@ class BaseDeploy {
         vault.rewardIntervalType
       );
     }
+
+    const dapp_contracts_info = [
+      {
+        contractName: this.tokens[0].contract_name,
+        contractInstances: this.tokens.map((token) => ({
+          name: token.contract_instance_name,
+          address: token.contract_address,
+        })),
+      },
+      {
+        contractName: this.nft_collections[0].contract_name,
+        contractInstances: this.nft_collections.map((nft_collection) => ({
+          name: nft_collection.contract_instance_name,
+          address: nft_collection.contract_address,
+        })),
+      },
+      {
+        contractName: this.nft_rewards[0].contract_name,
+        contractInstances: this.nft_rewards.map((nft_reward) => ({
+          name: nft_reward.contract_instance_name,
+          address: nft_reward.contract_address,
+        })),
+      },
+      {
+        contractName: this.nft_stakers[0].contract_name,
+        contractInstances: this.nft_stakers.map((nft_staker) => ({
+          name: nft_staker.contract_instance_name,
+          address: nft_staker.contract_address,
+        })),
+      },
+    ];
+
+    for (const dapp_contract_info of dapp_contracts_info) {
+      await Utils.generate_dapp_contract_info(
+        dapp_contract_info.contractName,
+        dapp_contract_info.contractInstances
+      );
+    }
   }
 }
 
