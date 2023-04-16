@@ -465,6 +465,14 @@ class BaseDeploy {
       );
     }
   }
+
+  async setBaseURI() {
+    for (const nft_collection of this.nft_collections) {
+      await nft_collection.setBaseURI(
+        nft_collection.output_nft_info.nft_metadata_folder_cid
+      );
+    }
+  }
 }
 
 async function main() {
