@@ -475,6 +475,17 @@ class BaseDeploy {
   }
 }
 
+class DeploySetup extends BaseDeploy {
+  async deploySetup() {
+    await this.deploy();
+    await this.setup();
+  }
+
+  async setup() {
+    await this.setBaseURI();
+  }
+}
+
 async function main() {
   const DEPLOY_MODES = ["DeploySetup", "DeployE2E", "SetupE2E"];
   const DEPLOY_MODE = process.env.DEPLOY_MODE;
