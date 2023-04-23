@@ -500,10 +500,46 @@ class DeployE2E extends BaseDeploy {
     await this.deploy();
   }
 
+  async get_output_nfts_info() {
+    const output_nfts_info = {
+      tom_and_jerry: {
+        nft_collection_id: "tom_and_jerry",
+        nft_collection_name: "NFT Collection TomAndJerry",
+        name: "Tom and Jerry",
+        symbol: "COL-TNJ",
+        image_name: "tom_and_jerry.png",
+        num_copies: 0,
+        ipfs_node_rpc_api: "/ip4/127.0.0.1/tcp/5001",
+        nft_image_folder_cid: "",
+        nft_metadata_folder_cid: "",
+      },
+      mickey_mouse: {
+        nft_collection_id: "mickey_mouse",
+        nft_collection_name: "NFT Collection MickeyMouse",
+        name: "Mickey Mouse",
+        symbol: "COL-MCM",
+        image_name: "mickey_mouse.png",
+        num_copies: 0,
+        ipfs_node_rpc_api: "/ip4/127.0.0.1/tcp/5001",
+        nft_image_folder_cid: "",
+        nft_metadata_folder_cid: "",
+      },
+      scooby_doo: {
+        nft_collection_id: "scooby_doo",
+        nft_collection_name: "NFT Collection ScoobyDoo",
+        name: "Scooby Doo",
+        symbol: "COL-SBD",
+        image_name: "scooby_doo.png",
+        num_copies: 0,
+        ipfs_node_rpc_api: "/ip4/127.0.0.1/tcp/5001",
+        nft_image_folder_cid: "",
+        nft_metadata_folder_cid: "",
+      },
+    };
 
+    return output_nfts_info;
+  }
 }
-
-
 
 async function main() {
   const DEPLOY_MODES = ["DeploySetup", "DeployE2E", "SetupE2E"];
@@ -519,12 +555,8 @@ async function main() {
   console.log("-----------------------------------------------------");
   console.log("------------- Contracts Deployment Info -------------");
   console.log("-----------------------------------------------------");
-
-  
 }
 
 // We recommend this pattern to be able to use async/await everywhere
 // and properly handle errors.
-main().catch((error) => {
-  
-});
+main().catch((error) => {});
