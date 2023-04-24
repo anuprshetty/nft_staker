@@ -541,6 +541,19 @@ class DeployE2E extends BaseDeploy {
   }
 }
 
+class SetupE2E extends BaseDeploy {
+  async setupE2E() {
+    await this.setup();
+  }
+
+  async setup() {
+    await this.setupPrerequisites();
+    await this.setBaseURI();
+  }
+
+
+}
+
 async function main() {
   const DEPLOY_MODES = ["DeploySetup", "DeployE2E", "SetupE2E"];
   const DEPLOY_MODE = process.env.DEPLOY_MODE;
@@ -555,8 +568,12 @@ async function main() {
   console.log("-----------------------------------------------------");
   console.log("------------- Contracts Deployment Info -------------");
   console.log("-----------------------------------------------------");
+
+  
 }
 
 // We recommend this pattern to be able to use async/await everywhere
 // and properly handle errors.
-main().catch((error) => {});
+main().catch((error) => {
+  
+});
