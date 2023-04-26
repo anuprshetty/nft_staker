@@ -551,7 +551,28 @@ class SetupE2E extends BaseDeploy {
     await this.setBaseURI();
   }
 
+  async setupPrerequisites() {
+    const all_contracts_setup_inputs = JSON.parse(
+      fs.readFileSync(
+        path.join(__dirname, "..", "contracts_setup_inputs.json"),
+        "utf8"
+      )
+    );
 
+    for (let contracts_setup_inputs in all_contracts_setup_inputs) {
+      contracts_setup_inputs =
+        all_contracts_setup_inputs[contracts_setup_inputs];
+      for (let contract_setup_inputs in contracts_setup_inputs) {
+        contract_setup_inputs = contracts_setup_inputs[contract_setup_inputs];
+        if (!contract_setup_inputs.address) {
+          throw new Error(`contracts_setup_inputs.json file is invalid.`);
+        }
+      }
+    }
+
+    
+    }
+  }
 }
 
 async function main() {
@@ -568,12 +589,8 @@ async function main() {
   console.log("-----------------------------------------------------");
   console.log("------------- Contracts Deployment Info -------------");
   console.log("-----------------------------------------------------");
-
-  
 }
 
 // We recommend this pattern to be able to use async/await everywhere
 // and properly handle errors.
-main().catch((error) => {
-  
-});
+main().catch((error) => {});
