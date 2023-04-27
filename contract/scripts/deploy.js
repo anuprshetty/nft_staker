@@ -570,7 +570,24 @@ class SetupE2E extends BaseDeploy {
       }
     }
 
-    
+    const contracts_setup_inputs = all_contracts_setup_inputs.NFTMinter;
+
+    this.nft_collections = [];
+    for (let contract_setup_inputs in contracts_setup_inputs) {
+      contract_setup_inputs = contracts_setup_inputs[contract_setup_inputs];
+
+      const output_nft_info = {
+        nft_metadata_folder_cid: contract_setup_inputs.nft_metadata_folder_cid,
+      };
+
+      const nft_collection = new NFTMinter(
+        contract_setup_inputs.contract_instance_name,
+        output_nft_info
+      );
+      nft_collection.contract_address = contract_setup_inputs.address;
+      await nft_collection.attachContract();
+
+      this.nft_collections.push(nft_collection);
     }
   }
 }
