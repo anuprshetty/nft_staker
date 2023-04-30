@@ -606,8 +606,25 @@ async function main() {
   console.log("-----------------------------------------------------");
   console.log("------------- Contracts Deployment Info -------------");
   console.log("-----------------------------------------------------");
+
+  if (DEPLOY_MODE === "DeploySetup") {
+    const deploy_setup = new DeploySetup();
+    await deploy_setup.deploySetup();
+  } else if (DEPLOY_MODE === "DeployE2E") {
+    const deploy_e2e = new DeployE2E();
+    await deploy_e2e.deployE2E();
+  } else if (DEPLOY_MODE === "SetupE2E") {
+    const setup_e2e = new SetupE2E();
+    await setup_e2e.setupE2E();
+  } else {
+    throw new Error("Invalid DEPLOY_MODE");
+  }
+
+  
 }
 
 // We recommend this pattern to be able to use async/await everywhere
 // and properly handle errors.
-main().catch((error) => {});
+main().catch((error) => {
+  
+});
