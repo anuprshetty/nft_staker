@@ -620,11 +620,12 @@ async function main() {
     throw new Error("Invalid DEPLOY_MODE");
   }
 
-  
+  console.log(`\n${JSON.stringify(Utils.contracts_setup_outputs, null, 2)}`);
+  console.log("-----------------------------------------------------");
+
+  console.log("\nSUCCESS: contracts deployment ... DONE");
 }
 
 // We recommend this pattern to be able to use async/await everywhere
 // and properly handle errors.
-main().catch((error) => {
-  
-});
+main().catch((error) => {});
