@@ -628,4 +628,18 @@ async function main() {
 
 // We recommend this pattern to be able to use async/await everywhere
 // and properly handle errors.
-main().catch((error) => {});
+main().catch((error) => {
+  console.log(
+    "\n--------------------------- ERROR --------------------------\n"
+  );
+  console.error(error);
+  console.log(
+    "\n------------------------------------------------------------\n"
+  );
+  console.log(
+    "ERROR NOTE:\n \
+      1) Make sure hardhat network is running.\n \
+      2) Make sure you have properly updated contracts_setup_inputs.json file."
+  );
+  process.exitCode = 1;
+});
