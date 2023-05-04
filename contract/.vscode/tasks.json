@@ -49,7 +49,7 @@
     },
     {
       "label": "contract->5.clean",
-      "command": "npx hardhat clean && rm -rf artifacts/ contracts/artifacts/ cache/ coverage/ coverage.json humanReadableAbis.json mochaOutput.json testMatrix.json remix-compiler.config.js compiler_config.json .debugger/ remix-slither-report.json"
+      "command": "npx hardhat clean && rm -rf artifacts/ contracts/artifacts/ cache/ coverage/ coverage.json humanReadableAbis.json mochaOutput.json testMatrix.json remix-compiler.config.js compiler_config.json .debugger/ remix-slither-report.json dapp_contracts_info/"
     },
     {
       "label": "contract->debug_on->console",
