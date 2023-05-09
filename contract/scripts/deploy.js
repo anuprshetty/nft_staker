@@ -99,7 +99,7 @@ class BaseContract {
       } catch (error) {
         if ("code" in error && error.code === "UND_ERR_HEADERS_TIMEOUT") {
           console.error(
-            `Error UND_ERR_HEADERS_TIMEOUT (${this.contract_name} contract). Retrying in ${retryDelaySeconds} seconds ...`
+            `Error UND_ERR_HEADERS_TIMEOUT (${this.contract_name} contract - ${this.contract_instance_name} contract_instance). Retrying in ${retryDelaySeconds} seconds ...`
           );
 
           retries++;
@@ -115,7 +115,7 @@ class BaseContract {
 
     if (retries === maxRetries) {
       console.error(
-        `Error UND_ERR_HEADERS_TIMEOUT (${this.contract_name} contract). Failed to deploy after ${maxRetries} retries.`
+        `Error UND_ERR_HEADERS_TIMEOUT (${this.contract_name} contract - ${this.contract_instance_name} contract_instance). Failed to deploy after ${maxRetries} retries.`
       );
       process.exitCode = 1;
     }
