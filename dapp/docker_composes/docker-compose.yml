@@ -1,0 +1,16 @@
+version: "3" # version of docker compose
+
+services:
+  nft-staker-dapp:
+    build:
+      context: ../
+      dockerfile: ./docker_files/Dockerfile
+      args:
+        - REACT_APP_IPFS_GATEWAY=http://127.0.0.1:4325/
+        - REACT_APP_EVMCHAIN_HTTP_PROVIDER_URL_READONLY=http://127.0.0.1:8545/
+    image: nft-staker-dapp-image:latest
+    container_name: nft-staker-dapp-container
+    hostname: nft-staker-dapp
+    restart: "no"
+    ports:
+      - "8080:80"
