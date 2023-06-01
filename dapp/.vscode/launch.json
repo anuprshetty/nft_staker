@@ -1,0 +1,23 @@
+{
+  // Use IntelliSense to learn about possible attributes.
+  // Hover to view descriptions of existing attributes.
+  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "chrome",
+      "request": "launch",
+      "name": "nft_staker->launch_debugger_for->dapp_process->running_on->local->on_env->dev",
+      "url": "http://localhost:3000/",
+      "webRoot": "${workspaceFolder}",
+      "preLaunchTask": "atomic_tasks->dapp->debug"
+    },
+    {
+      "type": "chrome",
+      "request": "launch",
+      "name": "nft_staker->attach_debugger_for->dapp_process->running_on->docker_compose->on_env->dev",
+      "url": "http://localhost:3000/",
+      "webRoot": "${workspaceFolder}"
+    }
+  ]
+}
