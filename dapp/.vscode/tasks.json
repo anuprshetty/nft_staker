@@ -1,0 +1,96 @@
+{
+  // See https://go.microsoft.com/fwlink/?LinkId=733558
+  // for the documentation about the tasks.json format
+
+  // See https://code.visualstudio.com/docs/editor/variables-reference
+  // for available variables which can be used in tasks.json, launch.json and settings.json files.
+
+  "version": "2.0.0",
+  "type": "shell",
+  "presentation": {
+    "reveal": "always",
+    "panel": "dedicated", // options: 'dedicated', 'shared'
+    "showReuseMessage": false // Controls whether to show the "Terminal will be reused by tasks, press any key to close it" message.
+  },
+
+  "tasks": [
+    {
+      "label": "dapp->prerequisites->npm_install",
+      "command": "npm install"
+    },
+    {
+      "label": "dapp->prerequisites->npm_cleanup",
+      "command": "rm -rf node_modules/ package-lock.json"
+    },
+    {
+      "label": "dapp->prerequisites->npm_reset",
+      "dependsOrder": "sequence", // by default, "parallel"
+      "dependsOn": [
+        "dapp->prerequisites->npm_cleanup",
+        "dapp->prerequisites->npm_install"
+      ]
+    },
+    {
+      "label": "atomic_tasks->dapp->debug",
+      "command": "npm run debug",
+      "isBackground": true,
+      "problemMatcher": []
+    },
+    {
+      "label": "dapp->build",
+      "command": "npm run build"
+    },
+    {
+      "label": "dapp->get_contracts_info",
+      "command": "cp -r ../contract/dapp_contracts_info/ ./src/contracts_info/"
+    },
+    {
+      "label": "dapp->run_on->local->on_env->dev",
+      "command": "npm run start",
+      "dependsOrder": "sequence",
+      "dependsOn": ["dapp->get_contracts_info"]
+    },
+    {
+      "label": "dapp->run_on->local->on_env->prod",
+      "command": "serve --listen tcp://127.0.0.1:8080 --no-port-switching --single --debug build",
+      "dependsOrder": "sequence",
+      "dependsOn": ["dapp->get_contracts_info", "dapp->build"]
+    },
+    {
+      "label": "dapp->run_on->docker_compose->on_env->dev->1.up",
+      "command": "docker compose --file docker_composes/docker-compose.dev.yml up --build --detach",
+      "dependsOrder": "sequence",
+      "dependsOn": ["dapp->get_contracts_info"]
+    },
+    {
+      "label": "dapp->run_on->docker_compose->on_env->dev->2.logs",
+      "command": "docker compose --file docker_composes/docker-compose.dev.yml logs --timestamps --follow"
+    },
+    {
+      "label": "dapp->run_on->docker_compose->on_env->dev->3.down",
+      "command": "docker compose --file docker_composes/docker-compose.dev.yml down"
+    },
+    {
+      "label": "dapp->run_on->docker_compose->on_env->dev->4.launch_dapp",
+      "command": "open -a 'Google Chrome' 'http://127.0.0.1:3000/'"
+    },
+    {
+      "label": "dapp->run_on->docker_compose->on_env->prod->1.up",
+      "command": "docker compose --file docker_composes/docker-compose.yml up --build --detach",
+      "dependsOrder": "sequence",
+      "dependsOn": ["dapp->get_contracts_info"]
+    },
+    {
+      "label": "dapp->run_on->docker_compose->on_env->prod->2.logs",
+      "command": "docker compose --file docker_composes/docker-compose.yml logs --timestamps --follow"
+    },
+    {
+      "label": "dapp->run_on->docker_compose->on_env->prod->3.down",
+      "command": "docker compose --file docker_composes/docker-compose.yml down"
+    },
+    {
+      "label": "dapp->run_on->docker_compose->on_env->prod->4.launch_dapp",
+      "command": "open -a 'Google Chrome' 'http://127.0.0.1:8080/'"
+    }
+  ]
+}
