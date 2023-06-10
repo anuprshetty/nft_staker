@@ -16,6 +16,7 @@ contract NFTMinter is ERC721Enumerable, Ownable {
     bool public paused = false;
 
     struct CustomPaymentCurrency {
+        string name;
         string symbol;
         IERC20 token;
         uint256 cost;
@@ -34,13 +35,19 @@ contract NFTMinter is ERC721Enumerable, Ownable {
     {}
 
     function addCustomPaymentCurrency(
+        string calldata _name,
         string calldata _symbol,
         IERC20 _token,
         uint256 _cost
     ) public onlyOwner {
         require(_cost > 0, "cost should be greater than 0");
         customPaymentCurrencies.push(
-            CustomPaymentCurrency({symbol: _symbol, token: _token, cost: _cost})
+            CustomPaymentCurrency({
+                name: _name,
+                symbol: _symbol,
+                token: _token,
+                cost: _cost
+            })
         );
     }
 

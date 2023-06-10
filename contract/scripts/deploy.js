@@ -178,9 +178,9 @@ class NFTMinter extends BaseContract {
     ];
   }
 
-  async addCustomPaymentCurrency(currency_index, symbol, token, cost) {
+  async addCustomPaymentCurrency(currency_index, name, symbol, token, cost) {
     await (
-      await this.contract.addCustomPaymentCurrency(symbol, token, cost)
+      await this.contract.addCustomPaymentCurrency(name, symbol, token, cost)
     ).wait();
 
     const customPaymentCurrency = await this.contract.customPaymentCurrencies(
@@ -348,6 +348,7 @@ class BaseDeploy {
         const cost = parseInt((c_index + 1) * (t_index + 1));
         await nft_collection.addCustomPaymentCurrency(
           t_index,
+          token.contract_instance_name,
           token.symbol,
           token.contract_address,
           cost
