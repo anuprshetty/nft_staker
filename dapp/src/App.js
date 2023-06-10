@@ -277,7 +277,7 @@ export default class App extends Component {
                 }}
               >
                 <h1 style={{ fontWeight: 900, color: "#FFFFFF" }}>
-                  Mint Portal
+                  NFT Mint Portal
                 </h1>
                 <Button
                   onClick={this.connectWallet}
