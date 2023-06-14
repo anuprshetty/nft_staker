@@ -402,6 +402,7 @@ class BaseDeploy {
         contractInstances: this.nft_collections.map((nft_collection) => ({
           name: nft_collection.contract_instance_name,
           address: nft_collection.contract_address,
+          nftCollection: nft_collection.output_nft_info.name,
         })),
       },
       {

@@ -72,7 +72,7 @@
       "type": "command",
       "command": "shellCommand.execute",
       "args": {
-        "command": "cd ${workplaceFolder}contract && npx hardhat networks"
+        "command": "npx hardhat networks"
       }
     }
   ]
