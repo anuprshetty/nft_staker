@@ -19,6 +19,7 @@ export default class App extends Component {
       maxSupply: 0,
       totalSupply: 0,
       mintedNFTs: [],
+      customPaymentCurrencies: [],
     };
 
     this.ipfsGateway = process.env.REACT_APP_IPFS_GATEWAY;
@@ -138,6 +139,17 @@ export default class App extends Component {
     }));
   };
 
+  refreshCustomPaymentCurrencies = async () => {
+    var customPaymentCurrencies = await this.contract_readonly.methods
+      .getCustomPaymentCurrencies()
+      .call();
+
+    this.setState((prevState) => ({
+      ...prevState,
+      customPaymentCurrencies: customPaymentCurrencies,
+    }));
+  };
+
   async componentDidMount() {
     console.log("component mounted");
     console.log("contractsInfo: ", contractsInfo);
@@ -146,6 +158,7 @@ export default class App extends Component {
     await this.refreshMaxSupply();
     await this.refreshTotalSupply();
     await this.refreshMintedNFTs();
+    await this.refreshCustomPaymentCurrencies();
   }
 
   async componentWillUnmount() {
@@ -268,7 +281,7 @@ export default class App extends Component {
       <div className="App">
         <div className="container">
           <div className="row">
-            <div className="col-md-6 offset-md-3">
+            <div className="col-md-6">
               <form
                 className="gradient my-5 p-2"
                 style={{
@@ -321,25 +334,56 @@ export default class App extends Component {
                     </label>
                   </div>
                 )}
-                <label
+                <div
+                  className="card"
                   style={{
-                    display: "block",
-                    fontWeight: 900,
-                    color: "#FFFFFF",
+                    margin: "5px",
+                    boxShadow: "1px 1px 4px #000000",
                   }}
                 >
-                  Tokens already minted: {this.state.totalSupply} out of{" "}
-                  {this.state.maxSupply}
-                </label>
-                <label
-                  style={{
-                    display: "block",
-                    fontWeight: 900,
-                    color: "#FFFFFF",
-                  }}
-                >
-                  1 NFT minting price: {this.state.mintPrice} ETH
-                </label>
+                  <label
+                    style={{ fontWeight: "bold", color: "#000000" }}
+                    htmlFor="floating Input"
+                  >
+                    <i style={{ color: "blue" }}>NFT collection: </i>
+                    <block>
+                      <select
+                        name="dropdown"
+                        style={{
+                          display: "inline-block",
+                          fontWeight: 900,
+                          color: "#000000",
+                        }}
+                        onChange={this.refreshCustomPaymentCurrencies}
+                      >
+                        {contractsInfo.NFTMinter.contractInstances.map(
+                          (contractInstance, index) => (
+                            <option key={index}>
+                              {contractInstance.nftCollection}
+                            </option>
+                          )
+                        )}
+                      </select>
+                    </block>
+                  </label>
+                  <label
+                    style={{ fontWeight: "bold", color: "#000000" }}
+                    htmlFor="floating Input"
+                  >
+                    <i style={{ color: "blue" }}>Tokens already minted: </i>
+                    <block>
+                      {" "}
+                      {this.state.totalSupply} out of {this.state.maxSupply}
+                    </block>
+                  </label>
+                  <label
+                    style={{ fontWeight: "bold", color: "#000000" }}
+                    htmlFor="floating Input"
+                  >
+                    <i style={{ color: "blue" }}>1 NFT minting price: </i>
+                    <block> {this.state.mintPrice} ETH</block>
+                  </label>
+                </div>
                 {this.state.wallet.accounts.length > 0 && (
                   <div
                     className="card"
@@ -359,13 +403,60 @@ export default class App extends Component {
                       max={this.state.maxMintAmount}
                       style={{ fontWeight: "bold", color: "#000000" }}
                     />
-                    <Button
-                      onClick={this.mint}
-                      variant="dark"
-                      style={{ fontWeight: "bold" }}
-                    >
-                      Mint
-                    </Button>
+                    <label style={{ fontWeight: "bold", color: "#000000" }}>
+                      Mint with currency
+                    </label>
+                    <div>
+                      <Button
+                        onClick={this.mint}
+                        variant="dark"
+                        style={{
+                          fontWeight: "bold",
+                          display: "inline-block",
+                          margin: "10px",
+                          height: "50px",
+                          width: "50px",
+                        }}
+                      >
+                        <img
+                          src={`token_ethereum.png`}
+                          style={{
+                            margin: "1px",
+                            height: "25px",
+                            width: "25px",
+                          }}
+                          alt={`token_ethereum`}
+                        />
+                      </Button>
+                      {this.state.customPaymentCurrencies.length > 0 &&
+                        this.state.customPaymentCurrencies.map(
+                          (customPaymentCurrency, index) => {
+                            return (
+                              <Button
+                                onClick={this.mint}
+                                variant="dark"
+                                style={{
+                                  fontWeight: "bold",
+                                  display: "inline-block",
+                                  margin: "10px",
+                                  height: "50px",
+                                  width: "50px",
+                                }}
+                              >
+                                <img
+                                  src={`custom_payment_currencies/${customPaymentCurrency.name}.png`}
+                                  style={{
+                                    margin: "1px",
+                                    height: "25px",
+                                    width: "25px",
+                                  }}
+                                  alt={`${customPaymentCurrency.name}`}
+                                />
+                              </Button>
+                            );
+                          }
+                        )}
+                    </div>
                   </div>
                 )}
               </form>
