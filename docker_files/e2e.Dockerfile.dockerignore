@@ -1,0 +1,29 @@
+# common files
+**/.DS_Store
+
+# contract project files
+contract/node_modules/
+contract/artifacts/
+contract/cache/
+contract/coverage/
+contract/coverage.json
+contract/humanReadableAbis.json
+contract/mochaOutput.json
+contract/testMatrix.json
+contract/remix-compiler.config.js
+contract/compiler_config.json
+contract/.debugger/
+contract/remix-slither-report.json
+contract/typechain
+contract/typechain-types
+contract/dapp_contracts_info/
+contract/.env
+contract/setup_e2e_input.json
+
+# dapp project files
+dapp/.env
+dapp/README.md
+dapp/node_modules/
+dapp/build/
+dapp/coverage/
+dapp/src/contracts_info/

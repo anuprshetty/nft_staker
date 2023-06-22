@@ -1,0 +1,20 @@
+version: "3" # version of docker compose
+
+services:
+  nft-staker:
+    build:
+      context: ../
+      dockerfile: ./docker_files/e2e.Dockerfile
+      args:
+        - HARDHAT_NETWORK=remote
+        - ETHERNAL_API_TOKEN=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmaXJlYmFzZVVzZXJJZCI6Ikp1ajJoMkNRalpVQ0JCYXphYUo2Vk9OY2U4bTIiLCJhcGlLZXkiOiJTSk1DSk5SLU5NSjRGNEstSzhQOUFIUy1ZRDJOR04xXHUwMDAxIiwiaWF0IjoxNzAyOTY5Mzk5fQ.8kuAeWrpM1D_DyAf5tPHIjbXssJz-cM_7SSJrHwxZS8
+        - ETHERNAL_WORKSPACE=remote_net_explorer
+
+        - REACT_APP_IPFS_GATEWAY=http://127.0.0.1:4325/
+        - REACT_APP_EVMCHAIN_HTTP_PROVIDER_URL_READONLY=https://hardhat-network.onrender.com
+    image: nft-staker-image:latest
+    container_name: nft-staker-container
+    hostname: nft-staker
+    restart: "no"
+    ports:
+      - "8080:80"
