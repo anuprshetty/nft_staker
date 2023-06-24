@@ -1,0 +1,49 @@
+name: End to end deployment workflow
+
+on:
+  push:
+    branches:
+      - main
+
+env:
+  REGISTRY: ghcr.io
+  GH_REGISTRY_TOKEN: ${{ secrets.GH_REGISTRY_TOKEN }}
+  USER_NAME: ${{ github.actor }}
+  IMAGE_NAME: nft-staker-image
+  HARDHAT_NETWORK: remote
+  ETHERNAL_API_TOKEN: ${{ secrets.ETHERNAL_API_TOKEN }}
+  ETHERNAL_WORKSPACE: remote_net_explorer
+  REACT_APP_IPFS_GATEWAY: http://127.0.0.1:4325/
+  REACT_APP_EVMCHAIN_HTTP_PROVIDER_URL_READONLY: https://hardhat-network.onrender.com
+  RENDER_PLATFORM_DEPLOY_HOOK: ${{ secrets.RENDER_PLATFORM_DEPLOY_HOOK }}
+
+jobs:
+  e2e-deployment-job:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Log in to the Container registry
+        run: |
+          docker login --username ${{ env.USER_NAME }} --password ${{ env.GH_REGISTRY_TOKEN }} ${{ env.REGISTRY }}
+
+      - name: Build and push Docker image
+        run: |
+          docker build \
+          --file docker_files/e2e.Dockerfile \
+          --tag ${{ env.REGISTRY }}/${{ env.USER_NAME }}/${{ env.IMAGE_NAME }}:latest \
+          --build-arg HARDHAT_NETWORK=${{ env.HARDHAT_NETWORK }} \
+          --build-arg ETHERNAL_API_TOKEN=${{ env.ETHERNAL_API_TOKEN }} \
+          --build-arg ETHERNAL_WORKSPACE=${{ env.ETHERNAL_WORKSPACE }} \
+          --build-arg REACT_APP_IPFS_GATEWAY=${{ env.REACT_APP_IPFS_GATEWAY }} \
+          --build-arg REACT_APP_EVMCHAIN_HTTP_PROVIDER_URL_READONLY=${{ env.REACT_APP_EVMCHAIN_HTTP_PROVIDER_URL_READONLY }} \
+          .
+
+          docker push ${{ env.REGISTRY }}/${{ env.USER_NAME }}/${{ env.IMAGE_NAME }}:latest
+
+      - name: Deploy dapp
+        run: |
+          deployment_trigger_api_response=$(curl -s "${{ env.RENDER_PLATFORM_DEPLOY_HOOK }}") && \
+          echo "Deployment trigger API response: $deployment_trigger_api_response"
