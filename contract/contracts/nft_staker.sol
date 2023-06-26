@@ -5,6 +5,8 @@ pragma solidity ^0.8.0;
 import "./nft_minter.sol";
 import "./nft_reward.sol";
 
+// import "hardhat/console.sol";
+
 contract NFTStaker is Ownable, IERC721Receiver {
     enum RewardIntervalType {
         per_second,
@@ -282,7 +284,9 @@ contract NFTStaker is Ownable, IERC721Receiver {
         Vault storage vault = vaults[vaultIndex];
         require(vault.isActive == true, "vault is deactivated");
 
-        uint256[] memory tokenIds = vault.nftMinter.walletOfOwner(account);
+        uint256[] memory tokenIds = vault.nftMinter.walletOfOwner(
+            address(this)
+        );
 
         uint256 tokenId;
         uint256 totalStakes = 0;
@@ -306,7 +310,9 @@ contract NFTStaker is Ownable, IERC721Receiver {
         Vault storage vault = vaults[vaultIndex];
         require(vault.isActive == true, "vault is deactivated");
 
-        uint256[] memory tokenIds = vault.nftMinter.walletOfOwner(account);
+        uint256[] memory tokenIds = vault.nftMinter.walletOfOwner(
+            address(this)
+        );
         uint256[] memory tempTokenIds = new uint256[](tokenIds.length);
 
         uint256 tokenId;
