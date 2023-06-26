@@ -101,7 +101,7 @@ contract NFTMinter is ERC721Enumerable, Ownable {
         address _to,
         uint256 _mintAmount,
         uint256 customPaymentCurrencyIndex
-    ) public payable {
+    ) public {
         uint256 supply = totalSupply();
         require(!paused, "minting is paused");
         require(_mintAmount > 0, "mint amount is less than 1");
@@ -118,10 +118,10 @@ contract NFTMinter is ERC721Enumerable, Ownable {
             ];
 
         if (msg.sender != owner()) {
-            require(
-                msg.value == customPaymentCurrency.cost * _mintAmount,
-                "money sent is not enough to mint the required NFT tokens"
-            );
+            // require(
+            //     msg.value == customPaymentCurrency.cost * _mintAmount,
+            //     "money sent is not enough to mint the required NFT tokens"
+            // );
             customPaymentCurrency.token.transferFrom(
                 msg.sender,
                 address(this),
