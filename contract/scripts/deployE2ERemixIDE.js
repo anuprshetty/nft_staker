@@ -357,7 +357,7 @@ class BaseDeploy {
         nftMinter: nft_collection_tnj.contract_address,
         nftReward: nft_reward_gld.contract_address,
         intervalRewardPrice: 30,
-        rewardIntervalType: nft_staker.rewardIntervalType.per_min,
+        rewardIntervalType: nft_staker.rewardIntervalType.per_second,
       },
       {
         name: "mickey_mouse-silver",
@@ -365,7 +365,7 @@ class BaseDeploy {
         nftMinter: nft_collection_mcm.contract_address,
         nftReward: nft_reward_slv.contract_address,
         intervalRewardPrice: 20,
-        rewardIntervalType: nft_staker.rewardIntervalType.per_hour,
+        rewardIntervalType: nft_staker.rewardIntervalType.per_min,
       },
       {
         name: "scooby_doo-platinum",
@@ -373,7 +373,7 @@ class BaseDeploy {
         nftMinter: nft_collection_sbd.contract_address,
         nftReward: nft_reward_ptm.contract_address,
         intervalRewardPrice: 10,
-        rewardIntervalType: nft_staker.rewardIntervalType.per_day,
+        rewardIntervalType: nft_staker.rewardIntervalType.per_hour,
       },
     ];
 
