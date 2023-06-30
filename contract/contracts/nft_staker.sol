@@ -341,7 +341,7 @@ contract NFTStaker is Ownable, IERC721Receiver {
         bytes calldata
     ) external pure override returns (bytes4) {
         require(
-            from == address(0x0),
+            from != address(0x0),
             "cannot send(or mint) NFT token to vault(staking contract) directly"
         );
         return IERC721Receiver.onERC721Received.selector;
